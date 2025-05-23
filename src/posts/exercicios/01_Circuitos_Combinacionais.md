@@ -24,12 +24,53 @@ order: 1
    - Controle da eletroválvula
      - A **eletroválvula** deve ser aberta para encher a **caixa d’água inferior**, garantindo o abastecimento da bomba.
      - A válvula **fecha automaticamente** quando a caixa inferior estiver **cheia** (**Sensor A ativado**).  
-   1. Construção da Tabela-Verdade
+   a. Construção da Tabela-Verdade
       Liste todas as possíveis combinações das entradas **A, B e C** e determine as saídas correspondentes para **bomba** e **eletroválvula**.
-   2. Definição das Expressões Lógicas
+
+   | a  | b  |  c | Bomba (S₁)| Eletroválvula (S₂)| obs|
+   |----|----|----|-----------|-------------------|----|
+   | 0  | 0  |  0 |  1        |      1            |    |
+   | 0  | 0  |  1 |  0        |      1            |    |
+   | 0  | 1  |  0 |  0        |      1            |    |
+   | 0  | 1  |  1 |  0        |      1            |    |
+   | 1  | 0  |  0 |  1        |      0            |    |
+   | 1  | 0  |  1 |  0        |      0            |    |
+   | 1  | 1  |  0 |  0        |      0            |    |
+   | 1  | 1  |  1 |  0        |      0            |    |
+
+   b. Definição das Expressões Lógicas
       Escreva as equações booleanas que representam a ativação/desativação da bomba e da eletroválvula.
-   3. Representação do Circuito Lógico
+
+Bomba (S₁)
+Regras:
+
+Liga se caixa superior NÃO está cheia (C = 0)
+E caixa inferior NÃO está vazia (B = 0)
+Expressão: S1
+
+Eletroválvula (S₂)
+Regras:
+
+Abre se caixa inferior NÃO está cheia (A = 0)
+Expressão: S2
+   c. Representação do Circuito Lógico
       Utilize **portas lógicas digitais** (**AND, OR, NOT**) para implementar as expressões booleanas obtidas no passo anterior e represente o circuito usando um **diagrama esquemático**.  
+
+Bomba:
+ Entradas: NOT C, NOT B
+ Saída: AND entre NOT C e NOT B
+
+Eletroválvula:
+  Entrada: NOT A
+
+Diagrama Esquemático (Descrição)
+ Bomba
+  Porta NOT para C ⇒ saída 1
+  Porta NOT para B ⇒ saída 2
+  Porta AND entre saída 1 e saída 2 ⇒ Bomba
+
+Eletroválvula
+  Porta NOT para A ⇒ Eletroválvula
 
 
 2. **Circuito Lógico para Controle de Máquinas com Prioridade**
@@ -41,11 +82,41 @@ order: 1
    - O circuito deve garantir que nunca mais de duas máquinas estejam ligadas ao mesmo tempo.
    - Caso mais de duas entradas estejam ativadas simultaneamente, apenas as máquinas de maior prioridade devem permanecer ligadas.
    - Apresente o diagrama lógico do circuito, utilizando portas lógicas, e explique como o controle de prioridade e limitação de máquinas é realizado.
-1. **Aquecedores de água solares**  
+  
+     R:
+       Entradas:
+A ──────────────┬────────────> S₁
+                │
+                │
+               [OR]────────────────┐
+                │                  │
+B ──────────────┼─[AND]──────────> S₂
+                │
+           [NOT]A
+                │  [OR]
+                └─[AND]─[NOT]C
+                │      [NOT]D
+
+A ─[NOT]──┬────────────┐
+          │            │
+B ─[NOT]──┴─[AND]─────┐│
+                      ││
+C ────────────────────┤└─────> S₃
+
+A ─[NOT]──┬───────────────┐
+          │               │
+B ─[NOT]──┼───────────────┤
+          │               │
+C ─[NOT]──┴───────┬───────┤
+                  │       │
+D ────────────────┴[AND]─> S₄
+
+
+   3 . **Aquecedores de água solares**  
     Alguns aquecedores solares usam uma bomba para forçar a circulação da água. Nesses aquecedores, há dois sensores de temperatura: um localizado no interior de uma das placas e outro localizado no interior do boiler (reservatório de água quente).  
     
-    Um circuito lógico que controla o acionamento da bomba recebe quatro sinais nesse tipo de sistema:  
-
+    Um circuito lógico que controla o acionamento da bomba recebe quatro sinais nesse tipo de sistema:
+    
    - **Sinal A**: nível ALTO sempre que a temperatura da placa estiver abaixo de 4 ºC, servindo para evitar o congelamento.  
    - **Sinal B**: nível ALTO sempre que a temperatura das placas estiver acima de 70 ºC, servindo para evitar sobreaquecimento.  
    - **Sinal C**: nível ALTO sempre que a diferença de temperatura entre a água das placas e a do boiler estiver acima de 5 ºC, servindo para forçar a circulação.  
@@ -56,10 +127,15 @@ order: 1
     - A temperatura das placas for superior a 70 ºC;  
     - A diferença entre ambas for superior a 5 ºC.  
 
-   1. Qual é a equação lógica do sinal de saída do circuito lógico?  
+   a. Qual é a equação lógica do sinal de saída do circuito lógico?  
 
       A) $ S = A.B.C + \overline{M} $
+      R: Saída é 1 quando A, B, e C são todos 1 ou quando M = 0.
       B) $ S = A.B.C.M  $
+      R: Saída é 1 somente quando A, B, C e M são todos 1.
       C) $ S = (A + B + C)M  $
+      R: Saída é 1 quando pelo menos um entre A, B ou C é 1 e M = 1.
       D) $ S = A + B + C + M  $
+      R: Saída é 1 se qualquer uma das entradas for 1.
       E) $ S = (A + B + C)\overline{M}  $
+      R: Saída é 1 quando pelo menos um entre A, B ou C é 1 e M = 0.
